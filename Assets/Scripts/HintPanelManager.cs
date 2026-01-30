@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct HintLevelData {
@@ -12,9 +13,11 @@ public class HintPanelManager : MonoBehaviour {
     [SerializeField] private HintLevelData[] hintLevelDataArray = new HintLevelData[5];
     [SerializeField] private TextMeshProUGUI hintTMP;
     [SerializeField] private TextMeshProUGUI levelTMP;
+    [SerializeField] private Button continueButton;
 
     private void Awake() {
         UIManager.INSTANCE.OnHintPanelEnabled += UIManager_OnHintPanelEnabled;
+        continueButton.onClick.AddListener(OnClickContinueButton);
     }
 
     private void UIManager_OnHintPanelEnabled(object sender, UIManager.OnPanelEnabledEventArgs e) {
@@ -25,6 +28,10 @@ public class HintPanelManager : MonoBehaviour {
         }
         hintTMP.text = hintLevelDataArray[arrayIndex].hintText;
         levelTMP.text = hintLevelDataArray[arrayIndex].levelText;
+    }
+
+    private void OnClickContinueButton() {
+        GameManager.INSTANCE.ChangeToCombatLevelState();
     }
 
 }

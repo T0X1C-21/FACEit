@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct MessagePanelData {
@@ -12,9 +13,11 @@ public class MessagePanelManager : MonoBehaviour {
     [SerializeField] private MessagePanelData[] messagePanelDataArray = new MessagePanelData[5];
     [SerializeField] private TextMeshProUGUI levelDoneTMP;
     [SerializeField] private TextMeshProUGUI messageTMP;
+    [SerializeField] private Button continueButton;
     
     private void Awake() {
         UIManager.INSTANCE.OnMessagePanelEnabled += UIManager_OnMessagePanelEnabled;
+        continueButton.onClick.AddListener(OnClickContinueButton);
     }
 
     private void UIManager_OnMessagePanelEnabled(object sender, UIManager.OnPanelEnabledEventArgs e) {
@@ -25,6 +28,10 @@ public class MessagePanelManager : MonoBehaviour {
         }
         messageTMP.text = messagePanelDataArray[arrayIndex].messageText;
         levelDoneTMP.text = messagePanelDataArray[arrayIndex].levelDoneText;
+    }
+
+    private void OnClickContinueButton() {
+        GameManager.INSTANCE.ChangeToHintLevelState();
     }
 
 }

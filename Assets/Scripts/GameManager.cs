@@ -53,4 +53,8 @@ public class GameManager : MonoBehaviour {
             levelNumber = currentlevelNumber
         });
     }
+
+    public void ChangeToHintLevelState() => ChangeLevelState(LevelState.Hint);
+    public void ChangeToCombatLevelState() => ChangeLevelState(LevelState.Combat);
+    public void ChangeToMessageLevelState() => ChangeLevelState(LevelState.Message);
 }

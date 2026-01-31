@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum LevelState {
@@ -10,51 +11,53 @@ public enum LevelState {
 public class GameManager : MonoBehaviour {
     public static GameManager INSTANCE;
 
-    public class OnLevelStateChangedEventArgs : EventArgs {
-        public LevelState levelState;
-        public int levelNumber;
-    }
-
-    public event EventHandler<OnLevelStateChangedEventArgs> OnLevelStateChanged;
-
-    private LevelState currentlevelState;
-    private int currentlevelNumber;
+    [SerializeField] private GameObject hintPanel;
+    [SerializeField] private GameObject combatPanel;
+    [SerializeField] private GameObject messagePanel;
+    [SerializeField] private float animationTime;
 
     private void Awake() {
         INSTANCE = this;
     }
 
     private void Start() {
-        // Initialization
-        ChangeLevelState(LevelState.Hint);
+        Transitioner.INSTANCE.OpenAnimation(animationTime);
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            ChangeLevelState(LevelState.Hint);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            ChangeLevelState(LevelState.Combat);
-        }
         if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            ChangeLevelState(LevelState.Message);
+            StartCoroutine(GameManager.INSTANCE.ChangeLevelState(LevelState.Message));
         }
     }
 
-    private void ChangeLevelState(LevelState newLevelState) {
-        currentlevelState = newLevelState;
+    public IEnumerator ChangeLevelState(LevelState newLevelState) {
+        Transitioner.INSTANCE.CloseAnimation(animationTime);
+        yield return new WaitForSeconds(animationTime);
 
-        if(newLevelState == LevelState.Hint) {
-            currentlevelNumber++;
+        switch (newLevelState) {
+            case LevelState.Combat:
+                hintPanel.SetActive(false);
+                combatPanel.SetActive(true);
+                break;
+            case LevelState.Message:
+                combatPanel.SetActive(false);
+                messagePanel.SetActive(true);
+                break;
         }
 
-        OnLevelStateChanged?.Invoke(this, new OnLevelStateChangedEventArgs {
-            levelState = currentlevelState,
-            levelNumber = currentlevelNumber
-        });
+        Transitioner.INSTANCE.OpenAnimation(animationTime);
     }
 
-    public void ChangeToHintLevelState() => ChangeLevelState(LevelState.Hint);
-    public void ChangeToCombatLevelState() => ChangeLevelState(LevelState.Combat);
-    public void ChangeToMessageLevelState() => ChangeLevelState(LevelState.Message);
+    public IEnumerator ReloadLevelAnimation() {
+        Transitioner.INSTANCE.CloseAnimation(animationTime);
+        yield return new WaitForSeconds(animationTime);
+
+        LevelLoader.INSTANCE.ReloadLevel();
+    }
+
+    public void EndLevelTransition(out float animationTime) {
+        Transitioner.INSTANCE.CloseAnimation(this.animationTime);
+        animationTime = this.animationTime;
+    }
+
 }

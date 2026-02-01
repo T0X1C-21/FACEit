@@ -27,6 +27,7 @@ public class AngryMask : Mask<AngryMask> {
     [SerializeField] private float rageIncreaseAmount;
     [SerializeField] private AngryMaskDialogues angryMaskDialoguesData;
     [SerializeField] private float animationTime;
+    [SerializeField] private float typeWritingSpeed;
 
     private RectTransform maskRectTransform;
 
@@ -69,6 +70,7 @@ public class AngryMask : Mask<AngryMask> {
     }
 
     private void DialogueFadeInAnimation(CanvasGroup canvasGroup) {
+        canvasGroup.alpha = 0f;
         canvasGroup.DOFade(1f, animationTime).SetEase(Ease.Linear);
     }
 
@@ -80,8 +82,7 @@ public class AngryMask : Mask<AngryMask> {
             yield return new WaitForSeconds(cooldownBetweenDialogues);
 
             TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-            dialogueTMP.text = text;
-            DialogueFadeInAnimation(dialogueTMP.GetComponent<CanvasGroup>());
+            StartCoroutine(Typewriter(dialogueTMP, text));
 
             float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
             yield return new WaitForSeconds(dialogueWaitTime);
@@ -105,9 +106,11 @@ public class AngryMask : Mask<AngryMask> {
         CombatPanelManager.INSTANCE.DisableCanPressButtons();
 
         foreach(string text in angryMaskDialoguesData.talkFeedbackDialogue) {
+            float cooldownBetweenDialogues = Random.Range(cooldownBetweenDialogues_min, cooldownBetweenDialogues_max);
+            yield return new WaitForSeconds(cooldownBetweenDialogues);
+
             TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-            dialogueTMP.text = text;
-            DialogueFadeInAnimation(dialogueTMP.GetComponent<CanvasGroup>());
+            StartCoroutine(Typewriter(dialogueTMP, text));
 
             float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
             yield return new WaitForSeconds(dialogueWaitTime);
@@ -132,8 +135,7 @@ public class AngryMask : Mask<AngryMask> {
         TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
         int randomIndex = Random.Range(0, angryMaskDialoguesData.observeFeedbackDialogue.Length);
         string randomAttackFeedbackText = angryMaskDialoguesData.observeFeedbackDialogue[randomIndex];
-        dialogueTMP.text = randomAttackFeedbackText;
-        DialogueFadeInAnimation(dialogueTMP.GetComponent<CanvasGroup>());
+        StartCoroutine(Typewriter(dialogueTMP, randomAttackFeedbackText));
 
         float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
         yield return new WaitForSeconds(dialogueWaitTime);
@@ -156,10 +158,9 @@ public class AngryMask : Mask<AngryMask> {
 
         TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
         int randomIndex = Random.Range(0, angryMaskDialoguesData.zeroRageMeterDialogue.Length);
-        string randomAttackFeedbackText = angryMaskDialoguesData.zeroRageMeterDialogue[randomIndex];
-        dialogueTMP.text = randomAttackFeedbackText;
-        DialogueFadeInAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-
+        string randomZeroRageFeedbackText = angryMaskDialoguesData.zeroRageMeterDialogue[randomIndex];
+        StartCoroutine(Typewriter(dialogueTMP, randomZeroRageFeedbackText));
+        
         float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
         yield return new WaitForSeconds(dialogueWaitTime);
         DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
@@ -170,13 +171,12 @@ public class AngryMask : Mask<AngryMask> {
 
     private IEnumerator AttackSequence() {
         CombatPanelManager.INSTANCE.DisableCanPressButtons();
-        IncreaseRageMeter();
+        StartCoroutine(IncreaseRageMeter());
 
         TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
         int randomIndex = Random.Range(0, angryMaskDialoguesData.attackFeedbackDialogue.Length);
         string randomAttackFeedbackText = angryMaskDialoguesData.attackFeedbackDialogue[randomIndex];
-        dialogueTMP.text = randomAttackFeedbackText;
-        DialogueFadeInAnimation(dialogueTMP.GetComponent<CanvasGroup>());
+        StartCoroutine(Typewriter(dialogueTMP, randomAttackFeedbackText));
 
         float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
         yield return new WaitForSeconds(dialogueWaitTime);
@@ -185,8 +185,19 @@ public class AngryMask : Mask<AngryMask> {
         StartCoroutine(AttackPlayer());
     }
 
-    private void IncreaseRageMeter() {
+    private IEnumerator IncreaseRageMeter() {
+        float previousRage = currentRage;
         currentRage += rageIncreaseAmount;
+
+        float t = 0f;
+        while(t < 1f) {
+            t += Time.deltaTime * 2f;
+            float rageValue;
+            rageValue = Mathf.Lerp(previousRage, currentRage, t);
+            angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, rageValue);
+            yield return null;
+        }
+
         angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, currentRage);
         maskDamage *= angryMaskRageSlider.value * 2.0f;
 
@@ -196,7 +207,7 @@ public class AngryMask : Mask<AngryMask> {
     private IEnumerator AttackPlayer() {
         float attackCooldown = Random.Range(attackCooldown_min, attackCooldown_max);
         yield return new WaitForSeconds(attackCooldown);
-        CombatPanelManager.INSTANCE.DealDamageToPlayer(maskDamage);
+        StartCoroutine(CombatPanelManager.INSTANCE.DealDamageToPlayer(maskDamage));
         CombatPanelManager.INSTANCE.EnableCanPressButtons();
     }
 
@@ -211,14 +222,13 @@ public class AngryMask : Mask<AngryMask> {
 
     private IEnumerator DefendSequence() {
         CombatPanelManager.INSTANCE.DisableCanPressButtons();
-        DecreaseRageMeter();
+        StartCoroutine(DecreaseRageMeter());
 
         TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
         int randomIndex = Random.Range(0, angryMaskDialoguesData.defendFeedbackDialogue.Length);
         string randomDefendFeedbackText = angryMaskDialoguesData.defendFeedbackDialogue[randomIndex];
-        dialogueTMP.text = randomDefendFeedbackText;
-        DialogueFadeInAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-
+        StartCoroutine(Typewriter(dialogueTMP, randomDefendFeedbackText));
+        
         float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
         yield return new WaitForSeconds(dialogueWaitTime);
         DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
@@ -226,16 +236,28 @@ public class AngryMask : Mask<AngryMask> {
         StartCoroutine(AttackPlayer());
     }
 
-    private void DecreaseRageMeter() {
+    private IEnumerator DecreaseRageMeter() {
+        float previousRage = currentRage;
         currentRage -= rageIncreaseAmount;
         if(currentRage <= 0.0f) {
             zeroRageMode = true;
             angryMaskRageSlider.value = 0.0f;
-        } else {
-            angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, currentRage);
-            maskDamage *= angryMaskRageSlider.value * 2.0f;
-            CombatPanelManager.INSTANCE.AddToActionLog("<color=green>AngryMask calms down!</color>");
+            yield break;
+        } 
+
+        float t = 0f;
+        while(t < 1f) {
+            t += Time.deltaTime * 2f;
+            float rageValue;
+            rageValue = Mathf.Lerp(previousRage, currentRage, t);
+            angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, rageValue);
+            yield return null;
         }
+
+        angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, currentRage);
+        maskDamage *= angryMaskRageSlider.value * 2.0f;
+
+        CombatPanelManager.INSTANCE.AddToActionLog("<color=green>AngryMask calms down!</color>");
     }
 
     private IEnumerator InitialDialogue() {
@@ -244,8 +266,7 @@ public class AngryMask : Mask<AngryMask> {
             yield return new WaitForSeconds(cooldownBetweenDialogues);
 
             TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-            dialogueTMP.text = text;
-            DialogueFadeInAnimation(dialogueTMP.GetComponent<CanvasGroup>());
+            StartCoroutine(Typewriter(dialogueTMP, text));
 
             float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
             yield return new WaitForSeconds(dialogueWaitTime);
@@ -260,7 +281,21 @@ public class AngryMask : Mask<AngryMask> {
     }
 
     private void DialogueFadeOutAnimation(CanvasGroup canvasGroup) {
+        canvasGroup.alpha = 1;
         canvasGroup.DOFade(0f, animationTime).SetEase(Ease.Linear);
+    }
+
+    private IEnumerator Typewriter(TextMeshProUGUI tmp, string text) {
+        DialogueFadeInAnimation(tmp.GetComponent<CanvasGroup>());
+        string currentString = "";
+        foreach(char ch in text) {
+            if(ch != ' ')
+                AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.TypeWriter);
+
+            tmp.text = currentString;
+            currentString += ch;
+            yield return new WaitForSeconds(typeWritingSpeed);
+        }
     }
     
 }

@@ -24,12 +24,6 @@ public class GameManager : MonoBehaviour {
         Transitioner.INSTANCE.OpenAnimation(animationTime);
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            StartCoroutine(GameManager.INSTANCE.ChangeLevelState(LevelState.Message));
-        }
-    }
-
     public IEnumerator ChangeLevelState(LevelState newLevelState) {
         Transitioner.INSTANCE.CloseAnimation(animationTime);
         yield return new WaitForSeconds(animationTime);

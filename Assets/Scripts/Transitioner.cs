@@ -15,11 +15,15 @@ public class Transitioner : MonoBehaviour {
     public void OpenAnimation(float animationTime) {
         leftRectTransform.DOAnchorPosX(-1080f, animationTime);
         rightRectTransform.DOAnchorPosX(1080f, animationTime);
+
+        AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.TransitionStart);
     }
 
     public void CloseAnimation(float animationTime) {
         leftRectTransform.DOAnchorPosX(0f, animationTime);
         rightRectTransform.DOAnchorPosX(0f, animationTime);
+
+        AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.TransitionEnd);
     }
 
 }

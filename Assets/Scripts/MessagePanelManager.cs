@@ -34,6 +34,8 @@ public class MessagePanelManager : MonoBehaviour {
         foreach(CanvasGroup canvasGroup in canvasGroupToFadeArray) {
             canvasGroup.DOFade(0f, animationTime).SetEase(Ease.Linear);
         }
+
+        AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonClick);
     }
 
     private void OnEnable() {

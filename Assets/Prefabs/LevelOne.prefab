@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 9101854588125726701}
   - component: {fileID: 8124273703731121859}
   - component: {fileID: 7009623346320879420}
+  - component: {fileID: 8695545698011473711}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -286,7 +287,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.15294118, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -320,6 +321,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &8695545698011473711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683078153942283856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e8e8b1786f3194d85c2a05f04c47a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonAnimator
 --- !u!1 &710048889467661475
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,6 +346,7 @@ GameObject:
   - component: {fileID: 7543168504320811782}
   - component: {fileID: 7314991477999015766}
   - component: {fileID: 3995761764478121436}
+  - component: {fileID: 1677399428393346089}
   m_Layer: 5
   m_Name: AttackButton
   m_TagString: Untagged
@@ -420,7 +434,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.15294118, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -454,6 +468,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1677399428393346089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710048889467661475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e8e8b1786f3194d85c2a05f04c47a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonAnimator
 --- !u!1 &799853551355279516
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,6 +643,7 @@ GameObject:
   - component: {fileID: 1887575915190431899}
   - component: {fileID: 507483168255151615}
   - component: {fileID: 1334907486873283664}
+  - component: {fileID: 6511333395025065271}
   m_Layer: 5
   m_Name: ObserveButton
   m_TagString: Untagged
@@ -704,7 +731,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.15294118, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -738,6 +765,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &6511333395025065271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814090546965822466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e8e8b1786f3194d85c2a05f04c47a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonAnimator
 --- !u!1 &828055062663002787
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,6 +1409,7 @@ GameObject:
   - component: {fileID: 382502872562207159}
   - component: {fileID: 9180590162180726560}
   - component: {fileID: 4951003791803522910}
+  - component: {fileID: 13456406303309137}
   m_Layer: 5
   m_Name: TalkButton
   m_TagString: Untagged
@@ -1457,7 +1497,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.15294118, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -1491,6 +1531,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &13456406303309137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586270792803507073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e8e8b1786f3194d85c2a05f04c47a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonAnimator
 --- !u!1 &2065369794039254831
 GameObject:
   m_ObjectHideFlags: 0
@@ -2017,6 +2069,7 @@ GameObject:
   - component: {fileID: 4958313835257144987}
   - component: {fileID: 9060335106700297860}
   - component: {fileID: 906738786262412029}
+  - component: {fileID: 4164179054149849179}
   m_Layer: 5
   m_Name: DefendButton
   m_TagString: Untagged
@@ -2104,7 +2157,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.15294118, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -2138,6 +2191,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &4164179054149849179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2736616989707472031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e8e8b1786f3194d85c2a05f04c47a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonAnimator
 --- !u!1 &2998705785030760880
 GameObject:
   m_ObjectHideFlags: 0
@@ -3517,12 +3582,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AngryMask
   dialogueBoxOneTMP: {fileID: 6967806333983969604}
   dialogueBoxTwoTMP: {fileID: 1002440165139518051}
-  dialogueWaitTime_min: 1.25
-  dialogueWaitTime_max: 1.75
+  dialogueWaitTime_min: 2.5
+  dialogueWaitTime_max: 3.5
   cooldownBetweenDialogues_min: 0.75
   cooldownBetweenDialogues_max: 1.25
   defeatTime: 3
-  maskDamage: 4
+  maskDamage: 3
   attackCooldown_min: 0.25
   attackCooldown_max: 0.5
   angryMaskRageSlider: {fileID: 3103410223096155150}
@@ -3558,7 +3623,8 @@ MonoBehaviour:
     defeatDialogue:
     - I only grew because you kept feeding me.
     - "You stopped fighting\u2026 and I faded."
-  animationTime: 1
+  animationTime: 0.5
+  typeWritingSpeed: 0.1
 --- !u!1 &5106954926102746228
 GameObject:
   m_ObjectHideFlags: 0
@@ -4889,7 +4955,7 @@ MonoBehaviour:
   playerHealthSlider: {fileID: 1558674851140184071}
   maskHealthSlider: {fileID: 1849443176802531097}
   rageMeterSlider: {fileID: 3103410223096155150}
-  playerDamage: 5
+  playerDamage: 6
   maxPlayerHealth: 100
   maxMaskHealth: 100
   maskType: 0
@@ -4906,6 +4972,8 @@ MonoBehaviour:
   - {fileID: 3635973171881446823}
   animationTime: 1.5
   stepAnimationTime: 0.25
+  normalHighlightColor: {r: 0, g: 1, b: 0.15294118, a: 1}
+  disabledHighlightColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &7280173701790690384
 GameObject:
   m_ObjectHideFlags: 0
@@ -5409,6 +5477,7 @@ GameObject:
   - component: {fileID: 2636386010437408275}
   - component: {fileID: 523612229053383674}
   - component: {fileID: 8113836806485749238}
+  - component: {fileID: 166001150776165874}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -5433,9 +5502,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 100}
+  m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 600, y: 100}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3229706188482367863
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5496,7 +5565,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.15294123, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -5530,6 +5599,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &166001150776165874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129362472299485223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e8e8b1786f3194d85c2a05f04c47a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonAnimator
 --- !u!1 &8566073814468187828
 GameObject:
   m_ObjectHideFlags: 0

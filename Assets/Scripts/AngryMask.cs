@@ -26,10 +26,6 @@ public class AngryMask : Mask<AngryMask> {
     [SerializeField] private float maxRage;
     [SerializeField] private float rageIncreaseAmount;
     [SerializeField] private AngryMaskDialogues angryMaskDialoguesData;
-    [SerializeField] private float animationTime;
-    [SerializeField] private float typeWritingSpeed;
-
-    private RectTransform maskRectTransform;
 
     private bool zeroRageMode = false;
     private float currentRage;
@@ -39,148 +35,56 @@ public class AngryMask : Mask<AngryMask> {
         currentRage = maxRage / 2.0f;
         angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, currentRage);
         maskDamage *= angryMaskRageSlider.value * 2.0f;
-
-        maskRectTransform = this.GetComponent<RectTransform>();
-        Tween upAnimation = maskRectTransform.DOAnchorPosY(-5f, 0.5f);
-        Tween downAnimation = maskRectTransform.DOAnchorPosY(-25f, 0.5f);
-        Tween resetAnimation = maskRectTransform.DOAnchorPosY(-15f, 0.5f);
-
-        Sequence animationSequence = DOTween.Sequence();
-        animationSequence.Append(upAnimation);
-        animationSequence.Append(downAnimation);
-        animationSequence.Append(resetAnimation);
-        animationSequence.SetLoops(-1);
     }
 
-    private void Start() {
-        CombatPanelManager.INSTANCE.OnAttackButtonPressed += CombatPanelManager_OnAttackButtonPressed;
-        CombatPanelManager.INSTANCE.OnDefendButtonPressed += CombatPanelManager_OnDefendButtonPressed;
-        CombatPanelManager.INSTANCE.OnObserveButtonPressed += CombatPanelManager_OnObserveButtonPressed;
-        CombatPanelManager.INSTANCE.OnTalkButtonPressed += CombatPanelManager_OnTalkButtonPressed;
-        CombatPanelManager.INSTANCE.OnMaskDefeated += CombatPanelManager_OnMaskDefeated;
-        CombatPanelManager.INSTANCE.OnStartAnimationsOver += CombatPanelManager_OnStartAnimationsOver;
+    protected override void CombatPanelManager_OnAttackButtonPressed(object sender, EventArgs e) {
+        if (zeroRageMode) {
+            ZeroRageModeSequence();
+            return;
+        }
+        AttackSequence();
     }
 
-    private void CombatPanelManager_OnStartAnimationsOver(object sender, EventArgs e) {
-        StartCoroutine(InitialDialogue());
+    protected override void CombatPanelManager_OnDefendButtonPressed(object sender, EventArgs e) {
+        if (zeroRageMode) {
+            ZeroRageModeSequence();
+            return;
+        }
+        DefendSequence();
     }
 
-    private void CombatPanelManager_OnMaskDefeated(object sender, EventArgs e) {
+    protected override void CombatPanelManager_OnObserveButtonPressed(object sender, EventArgs e) {
+        if (zeroRageMode) {
+            ZeroRageModeSequence();
+            return;
+        }
+        ObserveSequence();
+    }
+
+    protected override void CombatPanelManager_OnTalkButtonPressed(object sender, EventArgs e) {
+        if (zeroRageMode) {
+            ZeroRageModeSequence();
+            return;
+        }
+        TalkSequence();
+    }
+
+    protected override void CombatPanelManager_OnMaskDefeated(object sender, EventArgs e) {
         StartCoroutine(DefeatSequence());
     }
 
-    private void DialogueFadeInAnimation(CanvasGroup canvasGroup) {
-        canvasGroup.alpha = 0f;
-        canvasGroup.DOFade(1f, animationTime).SetEase(Ease.Linear);
+    protected override void CombatPanelManager_OnStartAnimationsOver(object sender, EventArgs e) {
+        InitialDialogue();
     }
 
-    private IEnumerator DefeatSequence() {
-        CombatPanelManager.INSTANCE.DisableCanPressButtons();
-
-        foreach(string text in angryMaskDialoguesData.defeatDialogue) {
-            float cooldownBetweenDialogues = Random.Range(cooldownBetweenDialogues_min, cooldownBetweenDialogues_max);
-            yield return new WaitForSeconds(cooldownBetweenDialogues);
-
-            TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-            StartCoroutine(Typewriter(dialogueTMP, text));
-
-            float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
-            yield return new WaitForSeconds(dialogueWaitTime);
-            DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-        }
-        
-        yield return new WaitForSeconds(defeatTime);
-        OnMaskDefeated?.Invoke(this, EventArgs.Empty);
+    private void InitialDialogue() {
+        StartCoroutine(StringChain(angryMaskDialoguesData.introDialogue));
+        OnIntroDialoguesFinished?.Invoke(this, EventArgs.Empty);
     }
 
-    private void CombatPanelManager_OnTalkButtonPressed(object sender, EventArgs e) {
-        if (zeroRageMode) {
-            StartCoroutine(ZeroRageModeSequence());
-            return;
-        }
-
-        StartCoroutine(TalkSequence());
-    }
-
-    private IEnumerator TalkSequence() {
-        CombatPanelManager.INSTANCE.DisableCanPressButtons();
-
-        foreach(string text in angryMaskDialoguesData.talkFeedbackDialogue) {
-            float cooldownBetweenDialogues = Random.Range(cooldownBetweenDialogues_min, cooldownBetweenDialogues_max);
-            yield return new WaitForSeconds(cooldownBetweenDialogues);
-
-            TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-            StartCoroutine(Typewriter(dialogueTMP, text));
-
-            float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
-            yield return new WaitForSeconds(dialogueWaitTime);
-            DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-        }
-        
-        StartCoroutine(AttackPlayer());
-    }
-
-    private void CombatPanelManager_OnObserveButtonPressed(object sender, EventArgs e) {
-        if (zeroRageMode) {
-            StartCoroutine(ZeroRageModeSequence());
-            return;
-        }
-
-        StartCoroutine(ObserveSequence());
-    }
-
-    private IEnumerator ObserveSequence() {
-        CombatPanelManager.INSTANCE.DisableCanPressButtons();
-
-        TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-        int randomIndex = Random.Range(0, angryMaskDialoguesData.observeFeedbackDialogue.Length);
-        string randomAttackFeedbackText = angryMaskDialoguesData.observeFeedbackDialogue[randomIndex];
-        StartCoroutine(Typewriter(dialogueTMP, randomAttackFeedbackText));
-
-        float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
-        yield return new WaitForSeconds(dialogueWaitTime);
-        DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-
-        StartCoroutine(AttackPlayer());
-    }
-
-    private void CombatPanelManager_OnAttackButtonPressed(object sender, EventArgs e) {
-        if (zeroRageMode) {
-            StartCoroutine(ZeroRageModeSequence());
-            return;
-        }
-
-        StartCoroutine(AttackSequence());
-    }
-
-    private IEnumerator ZeroRageModeSequence() {
-        CombatPanelManager.INSTANCE.DisableCanPressButtons();
-
-        TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-        int randomIndex = Random.Range(0, angryMaskDialoguesData.zeroRageMeterDialogue.Length);
-        string randomZeroRageFeedbackText = angryMaskDialoguesData.zeroRageMeterDialogue[randomIndex];
-        StartCoroutine(Typewriter(dialogueTMP, randomZeroRageFeedbackText));
-        
-        float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
-        yield return new WaitForSeconds(dialogueWaitTime);
-        DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=green>AngryMask cannot attack as it has lost its rage!</color>");
-        CombatPanelManager.INSTANCE.EnableCanPressButtons();
-    }
-
-    private IEnumerator AttackSequence() {
-        CombatPanelManager.INSTANCE.DisableCanPressButtons();
+    private void AttackSequence() {
+        StartCoroutine(StringSingle(angryMaskDialoguesData.attackFeedbackDialogue));
         StartCoroutine(IncreaseRageMeter());
-
-        TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-        int randomIndex = Random.Range(0, angryMaskDialoguesData.attackFeedbackDialogue.Length);
-        string randomAttackFeedbackText = angryMaskDialoguesData.attackFeedbackDialogue[randomIndex];
-        StartCoroutine(Typewriter(dialogueTMP, randomAttackFeedbackText));
-
-        float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
-        yield return new WaitForSeconds(dialogueWaitTime);
-        DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
 
         StartCoroutine(AttackPlayer());
     }
@@ -202,38 +106,6 @@ public class AngryMask : Mask<AngryMask> {
         maskDamage *= angryMaskRageSlider.value * 2.0f;
 
         CombatPanelManager.INSTANCE.AddToActionLog("<color=red>AngryMask rage grows!</color>");
-    }
-
-    private IEnumerator AttackPlayer() {
-        float attackCooldown = Random.Range(attackCooldown_min, attackCooldown_max);
-        yield return new WaitForSeconds(attackCooldown);
-        StartCoroutine(CombatPanelManager.INSTANCE.DealDamageToPlayer(maskDamage));
-        CombatPanelManager.INSTANCE.EnableCanPressButtons();
-    }
-
-    private void CombatPanelManager_OnDefendButtonPressed(object sender, EventArgs e) {
-        if (zeroRageMode) {
-            StartCoroutine(ZeroRageModeSequence());
-            return;
-        }
-
-        StartCoroutine(DefendSequence());
-    }
-
-    private IEnumerator DefendSequence() {
-        CombatPanelManager.INSTANCE.DisableCanPressButtons();
-        StartCoroutine(DecreaseRageMeter());
-
-        TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-        int randomIndex = Random.Range(0, angryMaskDialoguesData.defendFeedbackDialogue.Length);
-        string randomDefendFeedbackText = angryMaskDialoguesData.defendFeedbackDialogue[randomIndex];
-        StartCoroutine(Typewriter(dialogueTMP, randomDefendFeedbackText));
-        
-        float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
-        yield return new WaitForSeconds(dialogueWaitTime);
-        DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-
-        StartCoroutine(AttackPlayer());
     }
 
     private IEnumerator DecreaseRageMeter() {
@@ -260,42 +132,37 @@ public class AngryMask : Mask<AngryMask> {
         CombatPanelManager.INSTANCE.AddToActionLog("<color=green>AngryMask calms down!</color>");
     }
 
-    private IEnumerator InitialDialogue() {
-        foreach(string text in angryMaskDialoguesData.introDialogue) {
-            float cooldownBetweenDialogues = Random.Range(cooldownBetweenDialogues_min, cooldownBetweenDialogues_max);
-            yield return new WaitForSeconds(cooldownBetweenDialogues);
+    private void ZeroRageModeSequence() {
+        StartCoroutine(StringSingle(angryMaskDialoguesData.zeroRageMeterDialogue));
 
-            TextMeshProUGUI dialogueTMP = GetRandomDialogueTMP();
-            StartCoroutine(Typewriter(dialogueTMP, text));
-
-            float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
-            yield return new WaitForSeconds(dialogueWaitTime);
-            DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-        }
-        OnIntroDialoguesFinished?.Invoke(this, EventArgs.Empty);
+        CombatPanelManager.INSTANCE.AddToActionLog("<color=green>AngryMask cannot attack as it has lost its rage!</color>");
     }
 
-    private TextMeshProUGUI GetRandomDialogueTMP() {
-        int i = Random.Range(0, 2);
-        return (i == 1) ? dialogueBoxOneTMP : dialogueBoxTwoTMP;
+    private void DefendSequence() {
+        StartCoroutine(StringSingle(angryMaskDialoguesData.defendFeedbackDialogue));
+        StartCoroutine(DecreaseRageMeter());
+
+        StartCoroutine(AttackPlayer());
     }
 
-    private void DialogueFadeOutAnimation(CanvasGroup canvasGroup) {
-        canvasGroup.alpha = 1;
-        canvasGroup.DOFade(0f, animationTime).SetEase(Ease.Linear);
+    private void ObserveSequence() {
+        StartCoroutine(StringSingle(angryMaskDialoguesData.observeFeedbackDialogue));
+        StartCoroutine(DecreaseRageMeter());
+
+        StartCoroutine(AttackPlayer());
     }
 
-    private IEnumerator Typewriter(TextMeshProUGUI tmp, string text) {
-        DialogueFadeInAnimation(tmp.GetComponent<CanvasGroup>());
-        string currentString = "";
-        foreach(char ch in text) {
-            if(ch != ' ')
-                AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.TypeWriter);
+    private void TalkSequence() {
+        StartCoroutine(StringChain(angryMaskDialoguesData.talkFeedbackDialogue));
+        
+        StartCoroutine(AttackPlayer());
+    }
 
-            tmp.text = currentString;
-            currentString += ch;
-            yield return new WaitForSeconds(typeWritingSpeed);
-        }
+    private IEnumerator DefeatSequence() {
+        StartCoroutine(StringChain(angryMaskDialoguesData.defeatDialogue));
+        
+        yield return new WaitForSeconds(defeatTime);
+        OnMaskDefeated?.Invoke(this, EventArgs.Empty);
     }
     
 }

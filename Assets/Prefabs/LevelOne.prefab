@@ -2862,8 +2862,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -320, y: 0}
-  m_SizeDelta: {x: 350, y: 49.96}
+  m_AnchoredPosition: {x: -170, y: 0}
+  m_SizeDelta: {x: 200, y: 49.96}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3606963005717720504
 CanvasRenderer:
@@ -2929,7 +2929,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 8
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3582,14 +3582,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AngryMask
   dialogueBoxOneTMP: {fileID: 6967806333983969604}
   dialogueBoxTwoTMP: {fileID: 1002440165139518051}
-  dialogueWaitTime_min: 2.5
-  dialogueWaitTime_max: 3.5
-  cooldownBetweenDialogues_min: 0.75
-  cooldownBetweenDialogues_max: 1.25
-  defeatTime: 3
+  dialogueWaitTime_min: 2.25
+  dialogueWaitTime_max: 2.75
+  cooldownBetweenDialogues_min: 1.75
+  cooldownBetweenDialogues_max: 2.25
+  defeatTime: 8
   maskDamage: 3
   attackCooldown_min: 0.25
   attackCooldown_max: 0.5
+  animationTime: 0.5
+  typeWritingSpeed: 0.1
   angryMaskRageSlider: {fileID: 3103410223096155150}
   maxRage: 100
   rageIncreaseAmount: 10
@@ -3623,8 +3625,6 @@ MonoBehaviour:
     defeatDialogue:
     - I only grew because you kept feeding me.
     - "You stopped fighting\u2026 and I faded."
-  animationTime: 0.5
-  typeWritingSpeed: 0.1
 --- !u!1 &5106954926102746228
 GameObject:
   m_ObjectHideFlags: 0
@@ -4629,8 +4629,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 320, y: 0}
-  m_SizeDelta: {x: 350, y: 49.96}
+  m_AnchoredPosition: {x: 170, y: 0}
+  m_SizeDelta: {x: 200, y: 49.96}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4194628889343133584
 CanvasRenderer:
@@ -4696,7 +4696,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 8
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

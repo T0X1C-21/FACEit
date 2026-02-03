@@ -16,7 +16,7 @@ public class LevelLoader : MonoBehaviour {
 
     public void SpawnNextLevel() {
         if(levelIndex >= levels.Length) {
-            return;
+            levelIndex = 0;
         }
 
         if(currentLevel != null)

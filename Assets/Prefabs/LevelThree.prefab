@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 125}
+  m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2117690501716121103
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Level One: Anger Mask'
+  m_text: 'Level Three: Sadness Mask'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
   m_sharedMaterial: {fileID: -940913222976559217, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
@@ -546,7 +546,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '"Not every problem is solved by force."'
+  m_text: '"Compassion is sometimes the solution."'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
   m_sharedMaterial: {fileID: -940913222976559217, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
@@ -1052,7 +1052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2627451, g: 0.09019608, b: 0.13725491, a: 1}
+  m_Color: {r: 0.09019607, g: 0.093592085, b: 0.2627451, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1127,7 +1127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09803922, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.003921569, b: 0.11764706, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1179,7 +1179,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 25}
   m_SizeDelta: {x: 1825, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9036266501562850744
@@ -1210,7 +1210,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '"Anger grows when you fight it."'
+  m_text: '"Sadness doesn''t want to be
+
+    defeated, it wants to be heard."'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
   m_sharedMaterial: {fileID: -940913222976559217, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
@@ -1289,108 +1291,6 @@ CanvasGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474261771148881834}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
---- !u!1 &1500007438236483866
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7420028090398148245}
-  - component: {fileID: 3103410223096155150}
-  - component: {fileID: 1640175343030285942}
-  m_Layer: 5
-  m_Name: RageMeter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &7420028090398148245
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500007438236483866}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 6120307188309666283}
-  - {fileID: 3208563884208206968}
-  m_Father: {fileID: 7244426590488214880}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -75, y: -50}
-  m_SizeDelta: {x: 100, y: 350}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3103410223096155150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500007438236483866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 0
-  m_TargetGraphic: {fileID: 0}
-  m_FillRect: {fileID: 8912846246112533532}
-  m_HandleRect: {fileID: 0}
-  m_Direction: 2
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 0.5
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!225 &1640175343030285942
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500007438236483866}
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
@@ -2364,7 +2264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09803922, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.00048209136, b: 0.11764706, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2533,42 +2433,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!1 &3222576872826576275
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6120307188309666283}
-  m_Layer: 5
-  m_Name: Fill Area
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &6120307188309666283
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3222576872826576275}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8912846246112533532}
-  m_Father: {fileID: 7420028090398148245}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.25, y: 0}
-  m_AnchorMax: {x: 0.75, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -9.999998}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3302878869723867525
 GameObject:
   m_ObjectHideFlags: 0
@@ -2732,7 +2596,7 @@ GameObject:
   - component: {fileID: 8654123487219608879}
   - component: {fileID: 3493689803384766276}
   m_Layer: 5
-  m_Name: LevelOne
+  m_Name: LevelThree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2862,8 +2726,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -170, y: 0}
-  m_SizeDelta: {x: 200, y: 49.96}
+  m_AnchoredPosition: {x: -270, y: 0}
+  m_SizeDelta: {x: 300, y: 49.96}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3606963005717720504
 CanvasRenderer:
@@ -3406,7 +3270,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Anger Mask Defeated!
+  m_text: Sadness Mask Defeated!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
   m_sharedMaterial: {fileID: -940913222976559217, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
@@ -3501,9 +3365,9 @@ GameObject:
   - component: {fileID: 7134466582222476031}
   - component: {fileID: 2201335015871627997}
   - component: {fileID: 4592037136453763739}
-  - component: {fileID: 8725046899139076048}
+  - component: {fileID: 6623173009072212055}
   m_Layer: 5
-  m_Name: AngerMask
+  m_Name: SadnessMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3558,7 +3422,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 832e072df64cf6f4c828ec19426698d7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b99168e38dcf342429e276025a58004f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3568,7 +3432,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8725046899139076048
+--- !u!114 &6623173009072212055
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3577,9 +3441,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4802775616398655562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66cff3601feb3fa44975470b4a87d971, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c5295957bc5472449ce0500bf856e1a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AngryMask
+  m_EditorClassIdentifier: Assembly-CSharp::SadnessMask
   dialogueBoxOneTMP: {fileID: 6967806333983969604}
   dialogueBoxTwoTMP: {fileID: 1002440165139518051}
   dialogueWaitTime_min: 2.25
@@ -3587,44 +3451,39 @@ MonoBehaviour:
   cooldownBetweenDialogues_min: 1.75
   cooldownBetweenDialogues_max: 2.25
   defeatTime: 8
-  maskDamage: 3
+  maskDamage: 6
   attackCooldown_min: 0.25
   attackCooldown_max: 0.5
   animationTime: 0.5
   typeWritingSpeed: 0.1
-  angryMaskRageSlider: {fileID: 3103410223096155150}
-  maxRage: 100
-  rageIncreaseAmount: 10
-  angryMaskDialoguesData:
+  sadnessMaskDialogues:
     introDialogue:
-    - Go on. Strike me.
-    - "You\u2019re holding back."
-    - Hit me. I dare you.
+    - "\u201CYou\u2019ll leave too.\u201D"
+    - "\u201CEveryone does.\u201D"
+    - "\u201CWhy bother trying?\u201D"
     attackFeedbackDialogue:
-    - YES!
-    - More!
-    - "That\u2019s it! feel it!"
-    - Again!
+    - "\u201CThat doesn\u2019t hurt.\u201D"
+    - "\u201CI\u2019m already empty.\u201D"
+    - "\u201CIt\u2019s fine.\u201D"
     defendFeedbackDialogue:
-    - Coward.
-    - Face me!
-    - "Don\u2019t turn away."
-    - Fight back!
+    - "\u201CProtecting yourself again?\u201D"
+    - "\u201CI don\u2019t blame you.\u201D"
+    - "\u201CIt\u2019s heavy, isn\u2019t it?\u201D"
     observeFeedbackDialogue:
-    - What are you staring at?
-    - Stop thinking.
-    - Act!
+    - "\u201CThere\u2019s nothing to see.\u201D"
+    - "\u201CJust tired.\u201D"
+    - "\u201CSo tired.\u201D"
     talkFeedbackDialogue:
-    - Talk? Now?
-    - "Words won\u2019t help you."
-    - Only action matters.
-    zeroRageMeterDialogue:
-    - "Why\u2026 am I tired?"
-    - "I was burning so hot\u2026"
-    - "There\u2019s nothing left."
+    - "\u201CYou\u2019re listening\u2026\u201D"
+    - "\u201CIt feels lighter.\u201D"
+    - "\u201CThank you.\u201D"
+    passiveFeedbackDialogue:
+    - "\u201CYou\u2019re still here?\u201D"
+    - "\u201CYou don\u2019t have to be still here.\u201D"
+    - "\u201CWhy won\u2019t you leave?\u201D"
     defeatDialogue:
-    - I only grew because you kept feeding me.
-    - "You stopped fighting\u2026 and I faded."
+    - "\u201CI didn\u2019t need fixing.\u201D"
+    - "\u201CI only needed time.\u201D"
 --- !u!1 &5106954926102746228
 GameObject:
   m_ObjectHideFlags: 0
@@ -4193,7 +4052,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Anger Mask
+  m_text: 'Sadness Mask
 
 '
   m_isRightToLeft: 0
@@ -4464,7 +4323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2627451, g: 0.09019608, b: 0.13725491, a: 1}
+  m_Color: {r: 0.09019608, g: 0.2627451, b: 0.2627451, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4629,8 +4488,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 170, y: 0}
-  m_SizeDelta: {x: 200, y: 49.96}
+  m_AnchoredPosition: {x: 270, y: 0}
+  m_SizeDelta: {x: 300, y: 49.96}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4194628889343133584
 CanvasRenderer:
@@ -4870,7 +4729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09803922, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.003921569, b: 0.11764706, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4955,17 +4814,16 @@ MonoBehaviour:
   acceptButton: {fileID: 0}
   playerHealthSlider: {fileID: 1558674851140184071}
   maskHealthSlider: {fileID: 1849443176802531097}
-  rageMeterSlider: {fileID: 3103410223096155150}
+  rageMeterSlider: {fileID: 0}
   playerDamage: 6
   maxPlayerHealth: 100
   maxMaskHealth: 100
-  maskType: 0
+  maskType: 2
   actionLogTMP: {fileID: 8568749720869379662}
   actionLogScrollBar: {fileID: 6001931954235867016}
   canvasGroupToFadeArray:
   - {fileID: 570000394983687505}
   - {fileID: 2335303727901419426}
-  - {fileID: 1640175343030285942}
   - {fileID: 3995761764478121436}
   - {fileID: 906738786262412029}
   - {fileID: 1334907486873283664}
@@ -5316,156 +5174,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &7494105567210875608
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8912846246112533532}
-  - component: {fileID: 3357231132373389197}
-  - component: {fileID: 892038769958585316}
-  m_Layer: 5
-  m_Name: Fill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &8912846246112533532
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7494105567210875608}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6120307188309666283}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 10}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3357231132373389197
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7494105567210875608}
-  m_CullTransparentMesh: 1
---- !u!114 &892038769958585316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7494105567210875608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0.00895071, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!1 &7836703774944562483
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3208563884208206968}
-  - component: {fileID: 4451221457290856906}
-  - component: {fileID: 7360717523475312222}
-  m_Layer: 5
-  m_Name: Background
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &3208563884208206968
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7836703774944562483}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7420028090398148245}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.25, y: 0}
-  m_AnchorMax: {x: 0.75, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4451221457290856906
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7836703774944562483}
-  m_CullTransparentMesh: 1
---- !u!114 &7360717523475312222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7836703774944562483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.4339623, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eb02def98bf12ab4fbf13baaa574ce6f, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.5
 --- !u!1 &8129362472299485223
 GameObject:
   m_ObjectHideFlags: 0
@@ -5713,7 +5421,6 @@ RectTransform:
   - {fileID: 3410531276459591512}
   - {fileID: 352148500061815227}
   - {fileID: 134472747524489213}
-  - {fileID: 7420028090398148245}
   - {fileID: 7134466582222476031}
   - {fileID: 1746512205200551746}
   m_Father: {fileID: 3153378155378658117}

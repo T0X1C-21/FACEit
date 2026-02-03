@@ -1,10 +1,7 @@
-using DG.Tweening;
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 [Serializable]
 public struct AngryMaskDialogues {
@@ -19,7 +16,6 @@ public struct AngryMaskDialogues {
 
 public class AngryMask : Mask<AngryMask> {
 
-    public event EventHandler OnIntroDialoguesFinished;
     public event EventHandler OnMaskDefeated;
 
     [SerializeField] private Slider angryMaskRageSlider;
@@ -79,7 +75,6 @@ public class AngryMask : Mask<AngryMask> {
 
     private void InitialDialogue() {
         StartCoroutine(StringChain(angryMaskDialoguesData.introDialogue));
-        OnIntroDialoguesFinished?.Invoke(this, EventArgs.Empty);
     }
 
     private void AttackSequence() {
@@ -114,6 +109,7 @@ public class AngryMask : Mask<AngryMask> {
         if(currentRage <= 0.0f) {
             zeroRageMode = true;
             angryMaskRageSlider.value = 0.0f;
+            ZeroRageModeSequence();
             yield break;
         } 
 
@@ -154,6 +150,7 @@ public class AngryMask : Mask<AngryMask> {
 
     private void TalkSequence() {
         StartCoroutine(StringChain(angryMaskDialoguesData.talkFeedbackDialogue));
+        StartCoroutine(DecreaseRageMeter());
         
         StartCoroutine(AttackPlayer());
     }

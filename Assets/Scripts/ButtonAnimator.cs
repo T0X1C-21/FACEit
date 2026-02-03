@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-public class ButtonAnimator : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
+public class ButtonAnimator : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
 
     private RectTransform buttonRectTransform;
 
@@ -20,4 +20,7 @@ public class ButtonAnimator : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         buttonRectTransform.DOScale(Vector3.one, 0.1f);
     }
 
+    public void OnPointerClick(PointerEventData eventData) {
+        OnPointerExit(eventData);
+    }
 }

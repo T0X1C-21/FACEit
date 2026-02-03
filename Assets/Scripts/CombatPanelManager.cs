@@ -1,14 +1,24 @@
 using DG.Tweening;
 using System;
 using System.Collections;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public enum MaskType {
-    AngryMask
+    AngerMask,
+    FearMask,
+    SadnessMask,
+    DenialMask,
+    EmptyMask
+}
+
+public enum ButtonType {
+    Attack,
+    Defend,
+    Observe,
+    Talk
 }
 
 public class CombatPanelManager : MonoBehaviour {
@@ -19,6 +29,7 @@ public class CombatPanelManager : MonoBehaviour {
     public event EventHandler OnDefendButtonPressed;
     public event EventHandler OnObserveButtonPressed;
     public event EventHandler OnTalkButtonPressed;
+    public event EventHandler OnAcceptButtonPressed;
     public event EventHandler OnMaskDefeated;
     public event EventHandler OnStartAnimationsOver;
 
@@ -26,6 +37,7 @@ public class CombatPanelManager : MonoBehaviour {
     [SerializeField] private Button defendButton;
     [SerializeField] private Button observeButton;
     [SerializeField] private Button talkButton;
+    [SerializeField] private Button acceptButton;
     [SerializeField] private Slider playerHealthSlider;
     [SerializeField] private Slider maskHealthSlider;
     [SerializeField] private Slider rageMeterSlider;
@@ -40,6 +52,7 @@ public class CombatPanelManager : MonoBehaviour {
     [SerializeField] private float stepAnimationTime;
     [SerializeField] private Color normalHighlightColor;
     [SerializeField] private Color disabledHighlightColor;
+    [SerializeField] private float perButtonCooldown;
 
     private RectTransform playerHealthSliderRectTransform;
     private RectTransform maskHealthSliderRectTransform;
@@ -50,12 +63,18 @@ public class CombatPanelManager : MonoBehaviour {
     private RectTransform talkButtonRectTransform;
     private RectTransform actionLogScrollViewRectTransform;
 
-    private bool canPressButtons = false;
+    private bool canPressButtons;
     private float playerHealth;
     private float maskHealth;
     private float nextPlayerDamageNullifier = 0.0f;
     private string actionLog;
-    
+
+    private bool canPressAttackButton = true;
+    private bool canPressDefendButton = true;
+    private bool canPressObserveButton = true;
+    private bool canPressTalkButton = true;
+    private bool canPressAcceptButton = false;
+
     private void Awake() {
         INSTANCE = this;
 
@@ -63,6 +82,10 @@ public class CombatPanelManager : MonoBehaviour {
         defendButton.onClick.AddListener(OnDefendButtonClick);
         observeButton.onClick.AddListener(OnObserveButtonClick);
         talkButton.onClick.AddListener(OnTalkButtonClick);
+        if(maskType == MaskType.EmptyMask) {
+            acceptButton.onClick.AddListener(OnAcceptButtonClick);
+            acceptButton.gameObject.SetActive(false);
+        }
 
         playerHealth = maxPlayerHealth;
         maskHealth = maxMaskHealth;
@@ -72,7 +95,7 @@ public class CombatPanelManager : MonoBehaviour {
 
         playerHealthSliderRectTransform = playerHealthSlider.GetComponent<RectTransform>();
         maskHealthSliderRectTransform = maskHealthSlider.GetComponent<RectTransform>();
-        if(maskType == MaskType.AngryMask) {
+        if(maskType == MaskType.AngerMask) {
             rageMeterSliderRectTransform = rageMeterSlider.GetComponent<RectTransform>();
         }
         attackButtonRectTransform = attackButton.GetComponent<RectTransform>(); 
@@ -80,24 +103,63 @@ public class CombatPanelManager : MonoBehaviour {
         observeButtonRectTransform = observeButton.GetComponent<RectTransform>();
         talkButtonRectTransform = talkButton.GetComponent<RectTransform>();
         actionLogScrollViewRectTransform = actionLogScrollBar.GetComponent<RectTransform>();
+
+        DisableCanPressButtons();
     }
 
     private void Start() {
         switch (maskType) {
-            case MaskType.AngryMask:
-                AngryMask.INSTANCE.OnIntroDialoguesFinished += OnIntroDialoguesFinished;
+            case MaskType.AngerMask:
                 AngryMask.INSTANCE.OnMaskDefeated += OnMaskDefeatedGameOver;
+                break;
+            case MaskType.FearMask:
+                FearMask.INSTANCE.OnMaskDefeated += OnMaskDefeatedGameOver;
+                break;
+            case MaskType.SadnessMask:
+                SadnessMask.INSTANCE.OnMaskDefeated += OnMaskDefeatedGameOver;
+                break;
+            case MaskType.DenialMask:
+                DenialMask.INSTANCE.OnMaskDefeated += OnMaskDefeatedGameOver;
+                break;
+            case MaskType.EmptyMask:
+                EmptyMask.INSTANCE.OnMaskDefeated += OnMaskDefeatedGameOver;
+                EmptyMask.INSTANCE.OnEmptyMaskInteractionsComplete += OnEmptyMaskInteractionsComplete;
                 break;
         }
     }
 
-    private void FixedUpdate() {
-        ColorBlock colorBlock = ColorBlock.defaultColorBlock;
-        colorBlock.highlightedColor = (canPressButtons) ? normalHighlightColor : disabledHighlightColor;
-        attackButton.colors = colorBlock;
-        defendButton.colors = colorBlock;
-        observeButton.colors = colorBlock;
-        talkButton.colors = colorBlock;
+    private void OnEmptyMaskInteractionsComplete(object sender, EventArgs e) {
+        StartCoroutine(ShowAcceptButton());
+    }
+
+    private IEnumerator ShowAcceptButton() {
+        DisableCanPressButtons();
+        yield return new WaitForSeconds(2f);
+        acceptButton.gameObject.SetActive(true);
+        canPressAcceptButton = true;
+        attackButton.GetComponent<CanvasGroup>().DOFade(0f, 2f);
+        defendButton.GetComponent<CanvasGroup>().DOFade(0f, 2f);
+        observeButton.GetComponent<CanvasGroup>().DOFade(0f, 2f);
+        talkButton.GetComponent<CanvasGroup>().DOFade(0f, 2f);
+        yield return new WaitForSeconds(1f);
+        acceptButton.GetComponent<CanvasGroup>().DOFade(1f, 3f).OnComplete(() => {
+            EnableCanPressButtons();
+        });
+    }
+
+    private void OnAcceptButtonClick() {
+        if (!canPressAcceptButton) {
+            return;
+        }
+
+        if (!canPressButtons) {
+            AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonError);
+            return;
+        }
+
+        OnAcceptButtonPressed?.Invoke(this, EventArgs.Empty);
+        acceptButton.interactable = false;
+        DisableCanPressButtons();
     }
 
     private void OnMaskDefeatedGameOver(object sender, EventArgs e) {
@@ -110,10 +172,14 @@ public class CombatPanelManager : MonoBehaviour {
 
         playerHealthSliderRectTransform.DOScale(Vector3.zero, animationTime).SetEase(Ease.InElastic);
         maskHealthSliderRectTransform.DOScale(Vector3.zero, animationTime + (1 * stepAnimationTime)).SetEase(Ease.InElastic);
-        if(maskType == MaskType.AngryMask) {
+        if(maskType == MaskType.AngerMask) {
             rageMeterSliderRectTransform.DOScale(Vector3.zero, animationTime + (1 * stepAnimationTime)).SetEase(Ease.InElastic);
         }
         actionLogScrollViewRectTransform.DOScale(Vector3.zero, animationTime + (2 * stepAnimationTime)).SetEase(Ease.InElastic);
+        if(maskType == MaskType.EmptyMask) {
+            acceptButton.GetComponent<RectTransform>().DOAnchorPosY
+                (-412.5f, animationTime+ (3 * stepAnimationTime)).SetEase(Ease.InElastic);
+        }
         attackButtonRectTransform.DOAnchorPosY(-275f, animationTime+ (3 * stepAnimationTime)).SetEase(Ease.InElastic);
         defendButtonRectTransform.DOAnchorPosY(-275f, animationTime+ (4 * stepAnimationTime)).SetEase(Ease.InElastic);
         observeButtonRectTransform.DOAnchorPosY(-412.5f, animationTime+ (5 * stepAnimationTime)).SetEase(Ease.InElastic);
@@ -131,7 +197,7 @@ public class CombatPanelManager : MonoBehaviour {
         // reset
         playerHealthSliderRectTransform.localScale = Vector3.zero;
         maskHealthSliderRectTransform.localScale = Vector3.zero;
-        if(maskType == MaskType.AngryMask) {
+        if(maskType == MaskType.AngerMask) {
             rageMeterSliderRectTransform.localScale = Vector3.zero;
         }
         actionLogScrollViewRectTransform.localScale = Vector3.zero;
@@ -147,7 +213,7 @@ public class CombatPanelManager : MonoBehaviour {
         // animate
         playerHealthSliderRectTransform.DOScale(Vector3.one, animationTime).SetEase(Ease.OutElastic);
         maskHealthSliderRectTransform.DOScale(Vector3.one, animationTime + (1 * stepAnimationTime)).SetEase(Ease.OutElastic);
-        if(maskType == MaskType.AngryMask) {
+        if(maskType == MaskType.AngerMask) {
             rageMeterSliderRectTransform.DOScale(Vector3.one, animationTime + (1 * stepAnimationTime)).SetEase(Ease.OutElastic);
         }
         actionLogScrollViewRectTransform.DOScale(Vector3.one, animationTime + (2 * stepAnimationTime)).SetEase(Ease.OutElastic);
@@ -163,8 +229,6 @@ public class CombatPanelManager : MonoBehaviour {
             canvasGroup.DOFade(1f, animationTime).SetEase(Ease.Linear);
         }
     }
-
-    private void OnIntroDialoguesFinished(object sender, System.EventArgs e) => EnableCanPressButtons();
 
     public void EnableCanPressButtons() {
         ColorBlock colorBlock = ColorBlock.defaultColorBlock;
@@ -188,7 +252,36 @@ public class CombatPanelManager : MonoBehaviour {
     }
 
     private void OnAttackButtonClick() {
+        if (!canPressButtons) {
+            AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonError);
+            return;
+        }
+
+        if (!canPressAttackButton) {
+            AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonError);
+            return;
+        }
+        canPressAttackButton = false;
         StartCoroutine(AttackAnimation());
+        StartCoroutine(ButtonCooldown(ButtonType.Attack));
+    }
+
+    private IEnumerator ButtonCooldown(ButtonType buttonType) {
+        yield return new WaitForSeconds(perButtonCooldown);
+        switch (buttonType) {
+            case ButtonType.Attack:
+                canPressAttackButton = true;
+                break;
+            case ButtonType.Defend:
+                canPressDefendButton = true;
+                break;
+            case ButtonType.Observe:
+                canPressObserveButton = true;
+                break;
+            case ButtonType.Talk:
+                canPressTalkButton = true;
+                break;
+        }
     }
 
     private IEnumerator AttackAnimation() {
@@ -198,24 +291,28 @@ public class CombatPanelManager : MonoBehaviour {
         }
 
         AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonClick);
-        int randomNumber = Random.Range(1, 11);
-        float randomDamage;
-        if(randomNumber < 4) { // 1, 2, 3
-            randomDamage = playerDamage * 2.5f;
-            AddToActionLog($"<color=orange>Considerable damage applied for {randomDamage.ToString("F1")}!</color>");
-        } else if(randomNumber < 9) { // 4, 5, 6, 7, 8
-            randomDamage = playerDamage * 1.0f;
-            AddToActionLog($"<color=green>Moderate damage applied for {randomDamage.ToString("F1")}!</color>");
-        } else if(randomNumber < 10){ // 9
-            randomDamage = playerDamage * 0.0f;
-            AddToActionLog("<color=red>Attack failed!</color>");
-        } else { // 10
-            randomDamage = playerDamage * 5.0f;
-            AddToActionLog($"<color=yellow>Critical damage applied for {randomDamage.ToString("F1")}!</color>");
+
+        float damageAmount = 0f;
+        switch (maskType) {
+            case MaskType.AngerMask:
+                damageAmount = AngerMaskAttackCalculator();
+                break;
+            case MaskType.FearMask:
+                damageAmount = FearMaskAttackCalculator();
+                break;
+            case MaskType.SadnessMask:
+                damageAmount = SadnessMaskAttackCalculator();
+                break;
+            case MaskType.DenialMask:
+                damageAmount = NormalAttackCalculator();
+                break;
+            case MaskType.EmptyMask:
+                damageAmount = EmptyMaskAttackCalculator();
+                break;
         }
-        
+
         float previousHealth = maskHealth;
-        maskHealth -= randomDamage;
+        maskHealth -= damageAmount;
 
         float t = 0f;
         while(t < 1f) {
@@ -231,6 +328,66 @@ public class CombatPanelManager : MonoBehaviour {
             yield break;
         }
         OnAttackButtonPressed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private float NormalAttackCalculator() {
+        int randomNumber = Random.Range(1, 11);
+        float randomDamage = 0f;
+        if(randomNumber < 4) { // 1, 2, 3
+            randomDamage = playerDamage * 2.5f;
+            AddToActionLog($"<color=orange>Considerable damage applied for {randomDamage.ToString("F1")}!</color>");
+        } else if(randomNumber < 9) { // 4, 5, 6, 7, 8
+            randomDamage = playerDamage * 1.0f;
+            AddToActionLog($"<color=green>Moderate damage applied for {randomDamage.ToString("F1")}!</color>");
+        } else { // 9, 10
+            randomDamage = playerDamage * 5.0f;
+            AddToActionLog($"<color=yellow>Critical damage applied for {randomDamage.ToString("F1")}!</color>");
+        }
+        return randomDamage;
+    }
+
+    private float AngerMaskAttackCalculator() {
+        int randomNumber = Random.Range(1, 11);
+        float randomDamage;
+        if(randomNumber < 4) { // 1, 2, 3
+            randomDamage = playerDamage * 2.5f;
+            AddToActionLog($"<color=orange>Considerable damage applied for {randomDamage.ToString("F1")}!</color>");
+        } else if(randomNumber < 9) { // 4, 5, 6, 7, 8
+            randomDamage = playerDamage * 1.0f;
+            AddToActionLog($"<color=green>Moderate damage applied for {randomDamage.ToString("F1")}!</color>");
+        } else if(randomNumber < 10){ // 9
+            randomDamage = playerDamage * 0.0f;
+            AddToActionLog("<color=red>Attack failed!</color>");
+        } else { // 10
+            randomDamage = playerDamage * 5.0f;
+            AddToActionLog($"<color=yellow>Critical damage applied for {randomDamage.ToString("F1")}!</color>");
+        }
+        return randomDamage;
+    }
+
+    private float FearMaskAttackCalculator() {
+        if (!FearMask.INSTANCE.IsSuccessfullyObserved()) {
+            AddToActionLog($"<color=red>Attacks seem to be missing!</color>");
+            return 0f;
+        }
+        return NormalAttackCalculator();
+    }
+
+    private float SadnessMaskAttackCalculator() {
+        if (!SadnessMask.INSTANCE.IsTalkedTo()) {
+            int randomNumber = Random.Range(0, 3);
+            if(randomNumber == 0)
+                AddToActionLog($"<color=red>Attack failed!</color>");
+            else
+                AddToActionLog($"<color=green>Moderate damage applied for {playerDamage.ToString("F1")}!</color>");
+            return (randomNumber == 0) ? 0f : playerDamage;
+        }
+        return NormalAttackCalculator();
+    }
+
+    private float EmptyMaskAttackCalculator() {
+        AddToActionLog($"<color=green>Attack doesn't seem to be affecting the EmptyMask</color>");
+        return 0f;
     }
 
     public IEnumerator DealDamageToPlayer(float damage) {
@@ -261,7 +418,7 @@ public class CombatPanelManager : MonoBehaviour {
 
         playerHealthSliderRectTransform.DOScale(Vector3.zero, animationTime).SetEase(Ease.InElastic);
         maskHealthSliderRectTransform.DOScale(Vector3.zero, animationTime + (1 * stepAnimationTime)).SetEase(Ease.InElastic);
-        if(maskType == MaskType.AngryMask) {
+        if(maskType == MaskType.AngerMask) {
             rageMeterSliderRectTransform.DOScale(Vector3.zero, animationTime + (1 * stepAnimationTime)).SetEase(Ease.InElastic);
         }
         actionLogScrollViewRectTransform.DOScale(Vector3.zero, animationTime + (2 * stepAnimationTime)).SetEase(Ease.InElastic);
@@ -281,6 +438,20 @@ public class CombatPanelManager : MonoBehaviour {
     private void OnDefendButtonClick() {
         if (!canPressButtons) {
             AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonError);
+            return;
+        }
+
+        if (!canPressDefendButton) {
+            AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonError);
+            return;
+        }
+        canPressDefendButton = false;
+        StartCoroutine(ButtonCooldown(ButtonType.Defend));
+
+        if(maskType == MaskType.DenialMask || maskType == MaskType.EmptyMask) {
+            nextPlayerDamageNullifier = 0.0f;
+            OnDefendButtonPressed?.Invoke(this, EventArgs.Empty);
+            AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonClick);
             return;
         }
 
@@ -307,6 +478,13 @@ public class CombatPanelManager : MonoBehaviour {
             return;
         }
 
+        if (!canPressObserveButton) {
+            AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonError);
+            return;
+        }
+        canPressObserveButton = false;
+        StartCoroutine(ButtonCooldown(ButtonType.Observe));
+
         AddToActionLog($"<#964B00>Observing {maskType.ToString()}</color>");
         OnObserveButtonPressed?.Invoke(this, EventArgs.Empty);
 
@@ -318,6 +496,13 @@ public class CombatPanelManager : MonoBehaviour {
             AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonError);
             return;
         }
+
+        if (!canPressTalkButton) {
+            AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonError);
+            return;
+        }
+        canPressTalkButton = false;
+        StartCoroutine(ButtonCooldown(ButtonType.Talk));
 
         AddToActionLog($"<color=blue>Talking to {maskType.ToString()}</color>");
         OnTalkButtonPressed?.Invoke(this, EventArgs.Empty);

@@ -28,9 +28,12 @@ public abstract class Mask<T> : MonoBehaviour where T : MonoBehaviour{
         INSTANCE = this as T;
 
         maskRectTransform = this.GetComponent<RectTransform>();
-        Tween upAnimation = maskRectTransform.DOAnchorPosY(-5f, 0.5f);
-        Tween downAnimation = maskRectTransform.DOAnchorPosY(-25f, 0.5f);
-        Tween resetAnimation = maskRectTransform.DOAnchorPosY(-15f, 0.5f);
+        float targetUp = maskRectTransform.anchoredPosition.y + 10f;
+        float targetDown = maskRectTransform.anchoredPosition.y - 10f;
+        float targetReset = maskRectTransform.anchoredPosition.y;
+        Tween upAnimation = maskRectTransform.DOAnchorPosY(targetUp, 0.5f);
+        Tween downAnimation = maskRectTransform.DOAnchorPosY(targetDown, 0.5f);
+        Tween resetAnimation = maskRectTransform.DOAnchorPosY(targetReset, 0.5f);
 
         Sequence animationSequence = DOTween.Sequence();
         animationSequence.Append(upAnimation);
@@ -64,7 +67,6 @@ public abstract class Mask<T> : MonoBehaviour where T : MonoBehaviour{
         float attackCooldown = Random.Range(attackCooldown_min, attackCooldown_max);
         yield return new WaitForSeconds(attackCooldown);
         StartCoroutine(CombatPanelManager.INSTANCE.DealDamageToPlayer(maskDamage));
-        CombatPanelManager.INSTANCE.EnableCanPressButtons();
     }
 
     protected void DialogueFadeInAnimation(CanvasGroup canvasGroup) {
@@ -73,7 +75,7 @@ public abstract class Mask<T> : MonoBehaviour where T : MonoBehaviour{
     }
 
     protected void DialogueFadeOutAnimation(CanvasGroup canvasGroup) {
-        canvasGroup.alpha = 1;
+        canvasGroup.alpha = 1f;
         canvasGroup.DOFade(0f, animationTime).SetEase(Ease.Linear);
     }
 
@@ -114,7 +116,6 @@ public abstract class Mask<T> : MonoBehaviour where T : MonoBehaviour{
         float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
         yield return new WaitForSeconds(dialogueWaitTime);
         DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-
         CombatPanelManager.INSTANCE.EnableCanPressButtons();
     }
 
@@ -133,7 +134,6 @@ public abstract class Mask<T> : MonoBehaviour where T : MonoBehaviour{
         float dialogueWaitTime = Random.Range(dialogueWaitTime_min, dialogueWaitTime_max);
         yield return new WaitForSeconds(dialogueWaitTime);
         DialogueFadeOutAnimation(dialogueTMP.GetComponent<CanvasGroup>());
-
         CombatPanelManager.INSTANCE.EnableCanPressButtons();
     }
 

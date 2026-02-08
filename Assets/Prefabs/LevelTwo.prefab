@@ -546,7 +546,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '"Understanding removes fear."'
+  m_text: "\u201CUnderstanding makes fear quieter.\u201D"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
   m_sharedMaterial: {fileID: -940913222976559217, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
@@ -1210,9 +1210,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '"Fear survives only when you
-
-    refuse to face it."'
+  m_text: "\u201CFear weakens when seen clearly.\u201D"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
   m_sharedMaterial: {fileID: -940913222976559217, guid: 5205cb78f59b1204a85760c35480c252, type: 2}
@@ -3450,42 +3448,55 @@ MonoBehaviour:
   dialogueWaitTime_max: 2.75
   cooldownBetweenDialogues_min: 1.75
   cooldownBetweenDialogues_max: 2.25
-  defeatTime: 8
-  maskDamage: 6
+  defeatTime: 18
+  maskDamage: 10
   attackCooldown_min: 0.25
   attackCooldown_max: 0.5
   animationTime: 0.5
   typeWritingSpeed: 0.1
   fearMaskDialogues:
     introDialogue:
-    - "\u201CDon\u2019t look at me.\u201D"
     - "\u201CYou shouldn\u2019t be here.\u201D"
-    - "\u201CPlease\u2026 go away.\u201D"
+    - "\u201CTurn around.\u201D"
+    - "\u201CPlease... go away.\u201D"
     attackFeedbackDialogue:
-    - "\u201CYou missed!\u201D"
-    - "\u201CI wasn\u2019t there.\u201D"
+    - "\u201CYou missed.\u201D"
+    - "\u201CYou\u2019re guessing.\u201D"
     - "\u201CToo slow.\u201D"
-    - "\u201CGuessing won\u2019t save you.\u201D"
+    - "\u201CSwinging blindly.\u201D"
+    - "\u201CI wasn\u2019t there.\u201D"
+    - "\u201CYou\u2019re fighting shadows.\u201D"
+    - "\u201CYou don\u2019t know where to strike.\u201D"
     defendFeedbackDialogue:
-    - "\u201CHiding won\u2019t help.\u201D"
-    - "\u201CYou feel it, don\u2019t you?\u201D"
-    - "\u201CIt\u2019s getting closer.\u201D"
+    - "\u201CDefense won\u2019t stop imagination.\u201D"
+    - "\u201CIt gets closer when you close your eyes.\u201D"
+    - "\u201CYou feel it behind you.\u201D"
+    - "\u201CYou can\u2019t block uncertainty.\u201D"
+    - "\u201CIt\u2019s still coming.\u201D"
+    - "\u201CHiding already?\u201D"
     observeFeedbackDialogue:
-    - "\u201CStop staring\u2026\u201D"
-    - "\u201CDon\u2019t see me.\u201D"
+    - "\u201CYou\u2019re getting closer to the truth.\u201D"
+    - "\u201CYou\u2019re seeing through it.\u201D"
+    - "\u201CLook away.\u201D"
     - "\u201CI don\u2019t like this.\u201D"
+    - "\u201CYou\u2019re noticing too much.\u201D"
+    - "\u201CStop staring!\u201D"
+    - "\u201CDon\u2019t watch me.\u201D"
     talkFeedbackDialogue:
-    - "\u201CWhy are you talking?\u201D"
-    - "\u201CYou\u2019ll see something you don\u2019t like.\u201D"
-    - "\u201CPlease stop.\u201D"
+    - "\u201CWhy are you speaking calmly?\u201D"
+    - "\u201CYou should be running.\u201D"
+    - "\u201CThis isn\u2019t how people face fear.\u201D"
     successfulObserveDialogue:
-    - "\u201CNo\u2026 you see me.\u201D"
+    - "\u201CNo... you see me.\u201D"
     - "\u201CI\u2019m not hiding anymore.\u201D"
+    - "\u201CI was only strong when unseen.\u201D"
+    - "\u201CYou made me visible.\u201D"
     defeatDialogue:
     - "\u201CI was never as big as you imagined.\u201D"
-    - "\u201CYou looked\u2026 and I shrank.\u201D"
+    - "\u201CYou looked... and I shrank.\u201D"
+    - "\u201CUnderstanding erased me.\u201D"
   timesToObserve_min: 2
-  timesToObserve_max: 4
+  timesToObserve_max: 3
 --- !u!1 &5106954926102746228
 GameObject:
   m_ObjectHideFlags: 0
@@ -4819,10 +4830,10 @@ MonoBehaviour:
   rageMeterSlider: {fileID: 0}
   playerDamage: 6
   maxPlayerHealth: 100
-  maxMaskHealth: 100
+  maxMaskHealth: 60
   maskType: 1
   actionLogTMP: {fileID: 8568749720869379662}
-  actionLogScrollBar: {fileID: 6001931954235867016}
+  actionLogScrollRect: {fileID: 3466116986973665834}
   canvasGroupToFadeArray:
   - {fileID: 570000394983687505}
   - {fileID: 2335303727901419426}

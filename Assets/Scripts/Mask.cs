@@ -66,6 +66,8 @@ public abstract class Mask<T> : MonoBehaviour where T : MonoBehaviour{
     protected IEnumerator AttackPlayer() {
         float attackCooldown = Random.Range(attackCooldown_min, attackCooldown_max);
         yield return new WaitForSeconds(attackCooldown);
+        ShakeManager.INSTANCE.TriggerNegativeShake();
+        AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.MaskAttack);
         StartCoroutine(CombatPanelManager.INSTANCE.DealDamageToPlayer(maskDamage));
     }
 

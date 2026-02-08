@@ -48,13 +48,11 @@ public class EmptyMask : Mask<EmptyMask> {
     }
 
     protected override void CombatPanelManager_OnDefendButtonPressed(object sender, EventArgs e) {
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=red>Defend failed!</color>");
         CheckNumberOfInteractions();
         DefendSequence();
     }
 
     protected override void CombatPanelManager_OnObserveButtonPressed(object sender, EventArgs e) {
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=red>Observe failed!</color>");
         CheckNumberOfInteractions();
         ObserveSequence();
     }

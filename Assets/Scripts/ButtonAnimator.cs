@@ -12,15 +12,24 @@ public class ButtonAnimator : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData pointerEventData) {
         AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonHover);
-
-        buttonRectTransform.DOScale(Vector3.one * 1.1f, 0.25f);
+        ScaleUpAnimation();
     }
 
     public void OnPointerExit(PointerEventData pointerEventData) {
-        buttonRectTransform.DOScale(Vector3.one, 0.1f);
+        ScaleDownAnimation();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnPointerClick(PointerEventData eventData) {
         OnPointerExit(eventData);
     }
+
+    private void ScaleUpAnimation() {
+        buttonRectTransform.DOScale(Vector3.one * 1.1f, 0.25f);
+    }
+
+    private void ScaleDownAnimation() {
+        buttonRectTransform.DOScale(Vector3.one, 0.25f);
+    }
+
 }

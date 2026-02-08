@@ -87,8 +87,6 @@ public class SadnessMask : Mask<SadnessMask> {
     private void TalkSequence() {
         StartCoroutine(StringChain(sadnessMaskDialogues.talkFeedbackDialogue));
         isTalkedTo = true;
-
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=green>SadnessMask seems to be affected by talking!</color>");
     }
 
     private void PassiveSequence() {

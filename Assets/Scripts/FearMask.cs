@@ -52,19 +52,32 @@ public class FearMask : Mask<FearMask> {
     }
 
     protected override void CombatPanelManager_OnObserveButtonPressed(object sender, EventArgs e) {
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#ADD8E6>---------- TURN {CombatPanelManager.turnNumber++} ----------</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#32CD32>You observed the FearMask.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
         if (successfullyObserved) {
             SuccessfullyObservedSequence();
             return;
         }
+
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#FFFFC5>The FearMask's movement seems to be more clear!.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
         IncrementNumberOfTimesObserved();
         ObserveSequence();
     }
 
     protected override void CombatPanelManager_OnTalkButtonPressed(object sender, EventArgs e) {
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#ADD8E6>---------- TURN {CombatPanelManager.turnNumber++} ----------</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#32CD32>You talk to the FearMask.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
         if (successfullyObserved) {
             SuccessfullyObservedSequence();
             return;
         }
+
         TalkSequence();
     }
 
@@ -89,8 +102,6 @@ public class FearMask : Mask<FearMask> {
     private void ObserveSequence() {
         StartCoroutine(StringSingle(fearMaskDialogues.observeFeedbackDialogue));
         StartCoroutine(AttackPlayer());
-
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=green>FearMask's attacks seems more clear!</color>");
     }
 
     private void TalkSequence() {
@@ -106,15 +117,17 @@ public class FearMask : Mask<FearMask> {
     }
 
     private void SuccessfullyObservedSequence() {
-        StartCoroutine(StringSingle(fearMaskDialogues.successfulObserveDialogue));
+        CombatPanelManager.INSTANCE.AddToActionLog("<color=#CB4C4F>The FearMask is scared of you as it can no longer hide!</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("<color=#ADD8E6>---------------------------------</color>");
 
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=green>FearMask cannot attack as it has been fully observed!</color>");
+        StartCoroutine(StringSingle(fearMaskDialogues.successfulObserveDialogue));
     }
 
     private void IncrementNumberOfTimesObserved() {
         numberOfTimesObserved++;
         if(numberOfTimesObserved == timesToObserve) {
             successfullyObserved = true;
+            typeWritingSpeed = 0.2f;
         }
     }
 

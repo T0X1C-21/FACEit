@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 [Serializable]
@@ -30,7 +31,7 @@ public class AngryMask : Mask<AngryMask> {
         base.Awake();
         currentRage = maxRage / 2.0f;
         angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, currentRage);
-        maskDamage *= angryMaskRageSlider.value * 2.0f;
+        maskDamage = maskDamage * (angryMaskRageSlider.value * 2.0f);
     }
 
     protected override void CombatPanelManager_OnAttackButtonPressed(object sender, EventArgs e) {
@@ -38,7 +39,11 @@ public class AngryMask : Mask<AngryMask> {
             ZeroRageModeSequence();
             return;
         }
-        AttackSequence();
+
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#FFFFC5>The AngerMask's rage increases!.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
+        StartCoroutine(AttackSequence());
     }
 
     protected override void CombatPanelManager_OnDefendButtonPressed(object sender, EventArgs e) {
@@ -46,6 +51,10 @@ public class AngryMask : Mask<AngryMask> {
             ZeroRageModeSequence();
             return;
         }
+
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#FFFFC5>The AngerMask's rage decreases!.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
         DefendSequence();
     }
 
@@ -54,6 +63,14 @@ public class AngryMask : Mask<AngryMask> {
             ZeroRageModeSequence();
             return;
         }
+
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#ADD8E6>---------- TURN {CombatPanelManager.turnNumber++} ----------</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#32CD32>You observed the AngerMask.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#FFFFC5>The AngerMask's rage decreases!.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
         ObserveSequence();
     }
 
@@ -62,6 +79,14 @@ public class AngryMask : Mask<AngryMask> {
             ZeroRageModeSequence();
             return;
         }
+
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#ADD8E6>---------- TURN {CombatPanelManager.turnNumber++} ----------</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#32CD32>You talk to the AngerMask.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
+        CombatPanelManager.INSTANCE.AddToActionLog($"<color=#FFFFC5>The AngerMask's rage decreases!.</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("");
+
         TalkSequence();
     }
 
@@ -77,9 +102,10 @@ public class AngryMask : Mask<AngryMask> {
         StartCoroutine(StringChain(angryMaskDialoguesData.introDialogue));
     }
 
-    private void AttackSequence() {
-        StartCoroutine(StringSingle(angryMaskDialoguesData.attackFeedbackDialogue));
+    private IEnumerator AttackSequence() {
         StartCoroutine(IncreaseRageMeter());
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(StringSingle(angryMaskDialoguesData.attackFeedbackDialogue));
 
         StartCoroutine(AttackPlayer());
     }
@@ -100,7 +126,6 @@ public class AngryMask : Mask<AngryMask> {
         angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, currentRage);
         maskDamage *= angryMaskRageSlider.value * 2.0f;
 
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=red>AngryMask rage grows!</color>");
     }
 
     private IEnumerator DecreaseRageMeter() {
@@ -109,7 +134,7 @@ public class AngryMask : Mask<AngryMask> {
         if(currentRage <= 0.0f) {
             zeroRageMode = true;
             angryMaskRageSlider.value = 0.0f;
-            ZeroRageModeSequence();
+            typeWritingSpeed = 0.2f;
             yield break;
         } 
 
@@ -124,14 +149,14 @@ public class AngryMask : Mask<AngryMask> {
 
         angryMaskRageSlider.value = Mathf.InverseLerp(0.0f, maxRage, currentRage);
         maskDamage *= angryMaskRageSlider.value * 2.0f;
-
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=green>AngryMask calms down!</color>");
     }
 
     private void ZeroRageModeSequence() {
-        StartCoroutine(StringSingle(angryMaskDialoguesData.zeroRageMeterDialogue));
 
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=green>AngryMask cannot attack as it has lost its rage!</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("<color=#CB4C4F>The AngerMask cannot attack as it's rage exhausted!</color>");
+        CombatPanelManager.INSTANCE.AddToActionLog("<color=#ADD8E6>---------------------------------</color>");
+
+        StartCoroutine(StringSingle(angryMaskDialoguesData.zeroRageMeterDialogue));
     }
 
     private void DefendSequence() {

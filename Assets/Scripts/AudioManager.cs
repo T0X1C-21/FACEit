@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public enum SoundEffect {
     TransitionStart,
@@ -8,7 +9,9 @@ public enum SoundEffect {
     ButtonError,
     TypeWriter,
     GameOver,
-    DefeatedMask
+    DefeatedMask,
+    PlayerAttack,
+    MaskAttack
 }
 
 public class AudioManager : MonoBehaviour {
@@ -19,6 +22,7 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private AudioSource soundEffectAudioSource;
     [SerializeField] private AudioSource soundEffectAudioSourceTwo;
     [SerializeField] private AudioSource typeWriterSoundEffectAudioSource;
+    [SerializeField] private AudioSource attackAudioSource;
     [SerializeField] private AudioClip transitionStartAudioClip;
     [SerializeField] private AudioClip transitionEndAudioClip;
     [SerializeField] private AudioClip buttonHoverAudioClip;
@@ -60,6 +64,10 @@ public class AudioManager : MonoBehaviour {
                 break;
             case SoundEffect.DefeatedMask:
                 GetFreeAudioSource().PlayOneShot(defeatedMaskAudioClip);
+                break;
+            case SoundEffect.PlayerAttack:
+            case SoundEffect.MaskAttack:
+                attackAudioSource.Play();
                 break;
         }
     }

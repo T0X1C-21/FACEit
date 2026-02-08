@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -46,7 +47,7 @@ public class CombatPanelManager : MonoBehaviour {
     [SerializeField] private float maxMaskHealth;
     [SerializeField] private MaskType maskType;
     [SerializeField] private TextMeshProUGUI actionLogTMP;
-    [SerializeField] private Scrollbar actionLogScrollBar;
+    [SerializeField] private ScrollRect actionLogScrollRect;
     [SerializeField] private CanvasGroup[] canvasGroupToFadeArray;
     [SerializeField] private float animationTime;
     [SerializeField] private float stepAnimationTime;
@@ -74,6 +75,7 @@ public class CombatPanelManager : MonoBehaviour {
     private bool canPressObserveButton = true;
     private bool canPressTalkButton = true;
     private bool canPressAcceptButton = false;
+    public static int turnNumber = 1;
 
     private void Awake() {
         INSTANCE = this;
@@ -102,7 +104,7 @@ public class CombatPanelManager : MonoBehaviour {
         defendButtonRectTransform = defendButton.GetComponent<RectTransform>();
         observeButtonRectTransform = observeButton.GetComponent<RectTransform>();
         talkButtonRectTransform = talkButton.GetComponent<RectTransform>();
-        actionLogScrollViewRectTransform = actionLogScrollBar.GetComponent<RectTransform>();
+        actionLogScrollViewRectTransform = actionLogScrollRect.GetComponent<RectTransform>();
 
         DisableCanPressButtons();
     }
@@ -231,24 +233,27 @@ public class CombatPanelManager : MonoBehaviour {
     }
 
     public void EnableCanPressButtons() {
-        ColorBlock colorBlock = ColorBlock.defaultColorBlock;
-        colorBlock.highlightedColor = normalHighlightColor;
-        attackButton.colors = colorBlock;
-        defendButton.colors = colorBlock;
-        observeButton.colors = colorBlock;
-        talkButton.colors = colorBlock;
+        ChangeButtonHighlight(attackButton, normalHighlightColor);
+        ChangeButtonHighlight(defendButton, normalHighlightColor);
+        ChangeButtonHighlight(observeButton, normalHighlightColor);
+        ChangeButtonHighlight(talkButton, normalHighlightColor);
 
         canPressButtons = true;
     }
     public void DisableCanPressButtons() {
-        ColorBlock colorBlock = ColorBlock.defaultColorBlock;
-        colorBlock.highlightedColor = disabledHighlightColor;
-        attackButton.colors = colorBlock;
-        defendButton.colors = colorBlock;
-        observeButton.colors = colorBlock;
-        talkButton.colors = colorBlock;
+        ChangeButtonHighlight(attackButton, disabledHighlightColor);
+        ChangeButtonHighlight(defendButton, disabledHighlightColor);
+        ChangeButtonHighlight(observeButton, disabledHighlightColor);
+        ChangeButtonHighlight(talkButton, disabledHighlightColor);
 
         canPressButtons = false;
+    }
+
+    private void ChangeButtonHighlight(Button button, Color highlightColor) {
+        ColorBlock colorBlock = button.colors;
+        colorBlock.highlightedColor = highlightColor;
+        colorBlock.pressedColor = highlightColor * 0.8f;
+        button.colors = colorBlock;
     }
 
     private void OnAttackButtonClick() {
@@ -292,6 +297,9 @@ public class CombatPanelManager : MonoBehaviour {
 
         AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonClick);
 
+        AddToActionLog($"<color=#ADD8E6>---------- TURN {turnNumber++} ----------</color>");
+        AddToActionLog($"<color=#32CD32>You attacked the {maskType}.</color>");
+
         float damageAmount = 0f;
         switch (maskType) {
             case MaskType.AngerMask:
@@ -311,6 +319,11 @@ public class CombatPanelManager : MonoBehaviour {
                 break;
         }
 
+        AddToActionLog("");
+
+        ShakeManager.INSTANCE.TriggerPositiveShake();
+        AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.PlayerAttack);
+
         float previousHealth = maskHealth;
         maskHealth -= damageAmount;
 
@@ -327,6 +340,7 @@ public class CombatPanelManager : MonoBehaviour {
             OnMaskDefeated?.Invoke(this, EventArgs.Empty);
             yield break;
         }
+
         OnAttackButtonPressed?.Invoke(this, EventArgs.Empty);
     }
 
@@ -334,14 +348,17 @@ public class CombatPanelManager : MonoBehaviour {
         int randomNumber = Random.Range(1, 11);
         float randomDamage = 0f;
         if(randomNumber < 4) { // 1, 2, 3
-            randomDamage = playerDamage * 2.5f;
-            AddToActionLog($"<color=orange>Considerable damage applied for {randomDamage.ToString("F1")}!</color>");
+            randomDamage = playerDamage * 2.0f;
+            AddToActionLog($"<color=#32CD32>Considerable damage applied.</color>");
+            AddToActionLog($"<color=#32CD32>The {maskType} takes {randomDamage} damage!</color>");
         } else if(randomNumber < 9) { // 4, 5, 6, 7, 8
             randomDamage = playerDamage * 1.0f;
-            AddToActionLog($"<color=green>Moderate damage applied for {randomDamage.ToString("F1")}!</color>");
+            AddToActionLog($"<color=#32CD32>Moderate damage applied.</color>");
+            AddToActionLog($"<color=#32CD32>The {maskType} takes {randomDamage} damage!</color>");
         } else { // 9, 10
-            randomDamage = playerDamage * 5.0f;
-            AddToActionLog($"<color=yellow>Critical damage applied for {randomDamage.ToString("F1")}!</color>");
+            randomDamage = playerDamage * 4.0f;
+            AddToActionLog($"<color=#32CD32>Critical damage applied.</color>");
+            AddToActionLog($"<color=#32CD32>The {maskType} takes {randomDamage} damage!</color>");
         }
         return randomDamage;
     }
@@ -350,24 +367,28 @@ public class CombatPanelManager : MonoBehaviour {
         int randomNumber = Random.Range(1, 11);
         float randomDamage;
         if(randomNumber < 4) { // 1, 2, 3
-            randomDamage = playerDamage * 2.5f;
-            AddToActionLog($"<color=orange>Considerable damage applied for {randomDamage.ToString("F1")}!</color>");
+            randomDamage = playerDamage * 2.0f;
+            AddToActionLog($"<color=#32CD32>Considerable damage applied.</color>");
+            AddToActionLog($"<color=#32CD32>The {maskType} takes {randomDamage} damage!</color>");
         } else if(randomNumber < 9) { // 4, 5, 6, 7, 8
             randomDamage = playerDamage * 1.0f;
-            AddToActionLog($"<color=green>Moderate damage applied for {randomDamage.ToString("F1")}!</color>");
+            AddToActionLog($"<color=#32CD32>Moderate damage applied.</color>");
+            AddToActionLog($"<color=#32CD32>The {maskType} takes {randomDamage} damage!</color>");
         } else if(randomNumber < 10){ // 9
             randomDamage = playerDamage * 0.0f;
-            AddToActionLog("<color=red>Attack failed!</color>");
+            AddToActionLog($"<color=#32CD32>Attack failed.</color>");
+            AddToActionLog($"<color=#32CD32>The {maskType} takes {randomDamage} damage!</color>");
         } else { // 10
-            randomDamage = playerDamage * 5.0f;
-            AddToActionLog($"<color=yellow>Critical damage applied for {randomDamage.ToString("F1")}!</color>");
+            randomDamage = playerDamage * 4.0f;
+            AddToActionLog($"<color=#32CD32>Critical damage applied.</color>");
+            AddToActionLog($"<color=#32CD32>The {maskType} takes {randomDamage} damage!</color>");
         }
         return randomDamage;
     }
 
     private float FearMaskAttackCalculator() {
         if (!FearMask.INSTANCE.IsSuccessfullyObserved()) {
-            AddToActionLog($"<color=red>Attacks seem to be missing!</color>");
+            AddToActionLog($"<color=#32CD32>Attack failed as the FearMask is evasive.</color>");
             return 0f;
         }
         return NormalAttackCalculator();
@@ -376,17 +397,14 @@ public class CombatPanelManager : MonoBehaviour {
     private float SadnessMaskAttackCalculator() {
         if (!SadnessMask.INSTANCE.IsTalkedTo()) {
             int randomNumber = Random.Range(0, 3);
-            if(randomNumber == 0)
-                AddToActionLog($"<color=red>Attack failed!</color>");
-            else
-                AddToActionLog($"<color=green>Moderate damage applied for {playerDamage.ToString("F1")}!</color>");
+            //if(randomNumber == 0)
+            //else
             return (randomNumber == 0) ? 0f : playerDamage;
         }
         return NormalAttackCalculator();
     }
 
     private float EmptyMaskAttackCalculator() {
-        AddToActionLog($"<color=green>Attack doesn't seem to be affecting the EmptyMask</color>");
         return 0f;
     }
 
@@ -396,7 +414,10 @@ public class CombatPanelManager : MonoBehaviour {
         playerHealth -= maskDamage;
         nextPlayerDamageNullifier = 0.0f;
 
-        AddToActionLog($"<color=purple>Received damage from {maskType.ToString()} for {maskDamage.ToString("F1")}!</color>");
+        AddToActionLog($"<color=#CB4C4F>The {maskType} attacks you</color>");
+        AddToActionLog($"<color=#CB4C4F>You take {maskDamage.ToString("F1")} damage!</color>");
+        AddToActionLog("<color=#ADD8E6>---------------------------------</color>");
+        AddToActionLog("");
         
         float t = 0f;
         while(t < 1f) {
@@ -455,17 +476,22 @@ public class CombatPanelManager : MonoBehaviour {
             return;
         }
 
+        AddToActionLog($"<color=#ADD8E6>---------- TURN {turnNumber++} ----------</color>");
+        AddToActionLog($"<color=#32CD32>You defend against the {maskType}.</color>");
+
         int randomNumber = Random.Range(1, 11);
         if(randomNumber < 4) { // 1, 2, 3
             nextPlayerDamageNullifier = 1.0f;
-            AddToActionLog("<color=green>Full defense applied</color>");
+            AddToActionLog($"<color=#32CD32>Full defense applied.</color>");
         } else if(randomNumber < 9) { // 4, 5, 6, 7, 8
             nextPlayerDamageNullifier = 0.5f;
-            AddToActionLog("<color=orange>Half defense applied</color>");
+            AddToActionLog($"<color=#32CD32>Half defense applied.</color>");
         } else { // 9, 10
             nextPlayerDamageNullifier = 0.0f;
-            AddToActionLog("<color=red>Failed to apply defense</color>");
+            AddToActionLog($"<color=#32CD32>Failed to apply defense.</color>");
         }
+
+        AddToActionLog("");
 
         OnDefendButtonPressed?.Invoke(this, EventArgs.Empty);
 
@@ -483,9 +509,9 @@ public class CombatPanelManager : MonoBehaviour {
             return;
         }
         canPressObserveButton = false;
+
         StartCoroutine(ButtonCooldown(ButtonType.Observe));
 
-        AddToActionLog($"<#964B00>Observing {maskType.ToString()}</color>");
         OnObserveButtonPressed?.Invoke(this, EventArgs.Empty);
 
         AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonClick);
@@ -504,7 +530,6 @@ public class CombatPanelManager : MonoBehaviour {
         canPressTalkButton = false;
         StartCoroutine(ButtonCooldown(ButtonType.Talk));
 
-        AddToActionLog($"<color=blue>Talking to {maskType.ToString()}</color>");
         OnTalkButtonPressed?.Invoke(this, EventArgs.Empty);
 
         AudioManager.INSTANCE.PlaySoundEffect(SoundEffect.ButtonClick);
@@ -515,7 +540,7 @@ public class CombatPanelManager : MonoBehaviour {
         actionLog += "\n";
         actionLogTMP.text = actionLog;
         Canvas.ForceUpdateCanvases();
-        actionLogScrollBar.value = 0.0f;
+        actionLogScrollRect.verticalNormalizedPosition = 0f;
     }
 
 }

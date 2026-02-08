@@ -81,11 +81,6 @@ public class DenialMask : Mask<DenialMask> {
 
     private void AttackSequence() {
         numberOfTimesAttacked++;
-        if(numberOfTimesAttacked == timesToAttackToCrackMask) {
-            isMaskCracked = true;
-            CombatPanelManager.INSTANCE.AddToActionLog("<color=green>DenialMask is cracked!</color>");
-        } else
-            CombatPanelManager.INSTANCE.AddToActionLog("<color=orange>DenialMask is slowly cracking!</color>");
 
         StartCoroutine(StringSingle(denialMaskDialogues.attackFeedbackDialogue));
         StartCoroutine(AttackPlayer());
@@ -93,13 +88,11 @@ public class DenialMask : Mask<DenialMask> {
 
     private void DefendSequence() {
         StartCoroutine(StringSingle(denialMaskDialogues.defendFeedbackDialogue));
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=red>Failed to defend!</color>");
         StartCoroutine(AttackPlayer());
     }
 
     private void ObserveSequence() {
         StartCoroutine(StringSingle(denialMaskDialogues.observeFeedbackDialogue));
-        CombatPanelManager.INSTANCE.AddToActionLog("<color=orange>Failed to observe!</color>");
         StartCoroutine(AttackPlayer());
     }
 
